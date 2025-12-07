@@ -1,35 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import Header from './components/Header';
+import UploadPage from './pages/UploadPage';
+import HomePage from './pages/HomePage';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [uploadedFile, setUploadedFile] = useState(null);
+  const [summary, setSummary] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const handleFileUpload = async (file) => {
+    console.log('File uploaded:', file);
+    setUploadedFile(file);
+    setIsProcessing(true);
+    
+    // Simulate processing
+    setTimeout(() => {
+      setSummary({
+        title: 'Use Case Document: Research Assistant for PDFs',
+        authors: 'Development Team',
+        abstract: 'This document outlines the use case...',
+        problem: 'Researchers struggle with...',
+        methodology: 'Our approach uses AI-powered...',
+        results: 'The system successfully extracts...',
+        conclusion: 'This tool significantly improves...'
+      });
+      setIsProcessing(false);
+    }, 2000);
+  };
+
+  const handleNewPaper = () => {
+    setUploadedFile(null);
+    setSummary(null);
+  };
+
+  if (!uploadedFile) {
+    return (
+      <div className="h-screen flex flex-col">
+        <Header fileName={null} onNewPaper={null} />
+        <UploadPage onFileUpload={handleFileUpload} />
+      </div>
+    );
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="h-screen flex flex-col bg-gray-50 dark:bg-gray-950">
+      <Header fileName={uploadedFile?.name} onNewPaper={handleNewPaper} />
+      <HomePage 
+        file={uploadedFile} 
+        summary={summary} 
+        isProcessing={isProcessing}
+      />
+    </div>
+  );
 }
 
-export default App
+export default App;
