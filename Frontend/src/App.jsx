@@ -2,42 +2,54 @@ import { useState } from 'react';
 import Header from './components/Header';
 import UploadPage from './pages/UploadPage';
 import HomePage from './pages/HomePage';
+import { uploadPDF } from './api';
 
 function App() {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [summary, setSummary] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleFileUpload = async (file) => {
     console.log('File uploaded:', file);
     setUploadedFile(file);
     setIsProcessing(true);
+    setError(null);
     
-    // Simulate processing
-    setTimeout(() => {
+    try {
+      // Call backend API
+      const summaryData = await uploadPDF(file);
+      
+      // Map backend response to frontend format
       setSummary({
-        title: 'Use Case Document: Research Assistant for PDFs',
-        authors: 'Development Team',
-        abstract: 'This document outlines the use case...',
-        problem: 'Researchers struggle with...',
-        methodology: 'Our approach uses AI-powered...',
-        results: 'The system successfully extracts...',
-        conclusion: 'This tool significantly improves...'
+        title: summaryData.title_and_authors || 'No title available',
+        abstract: summaryData.abstract || 'No abstract available',
+        problem: summaryData.problem_statement || 'No problem statement available',
+        methodology: summaryData.methodology || 'No methodology available',
+        results: summaryData.key_results || 'No results available',
+        conclusion: summaryData.conclusion || 'No conclusion available'
       });
+      
+    } catch (err) {
+      console.error('Error uploading file:', err);
+      setError(err.response?.data?.detail || 'Failed to process PDF. Please try again.');
+      setUploadedFile(null);
+    } finally {
       setIsProcessing(false);
-    }, 2000);
+    }
   };
 
   const handleNewPaper = () => {
     setUploadedFile(null);
     setSummary(null);
+    setError(null);
   };
 
   if (!uploadedFile) {
     return (
       <div className="h-screen flex flex-col">
         <Header fileName={null} onNewPaper={null} />
-        <UploadPage onFileUpload={handleFileUpload} />
+        <UploadPage onFileUpload={handleFileUpload} error={error} />
       </div>
     );
   }

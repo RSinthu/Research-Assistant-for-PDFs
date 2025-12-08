@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Upload, FileText, Brain, MessageCircle, BookOpen } from 'lucide-react';
+import { Upload, FileText, Brain, MessageCircle, BookOpen, AlertCircle } from 'lucide-react';
 
-export default function UploadPage({ onFileUpload }) {
+export default function UploadPage({ onFileUpload, error }) {
   const [isDragging, setIsDragging] = useState(false);
 
   const handleDragOver = (e) => {
@@ -47,6 +47,21 @@ export default function UploadPage({ onFileUpload }) {
         <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-8 md:mb-12 text-center max-w-md px-4">
           Upload your research paper to get structured summaries and ask questions
         </p>
+
+        {/* Error Message */}
+        {error && (
+          <div className="w-full max-w-2xl mx-4 mb-6 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-xl p-4 flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h4 className="text-sm font-semibold text-red-900 dark:text-red-100 mb-1">
+                Upload Failed
+              </h4>
+              <p className="text-sm text-red-700 dark:text-red-300">
+                {error}
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Upload Zone */}
         <div
