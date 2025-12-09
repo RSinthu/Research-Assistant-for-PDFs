@@ -1,17 +1,11 @@
-import os
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 from dotenv import load_dotenv
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq
 
 load_dotenv()
 
-# Use LangChain's Google AI wrapper
-llm = ChatGoogleGenerativeAI(
-    model="gemini-2.5-flash",
-    google_api_key=os.getenv("GOOGLE_API_KEY"),
-    temperature=0.3
-)
+llm = ChatGroq(model="openai/gpt-oss-120b")
 
 
 json_parser = JsonOutputParser()

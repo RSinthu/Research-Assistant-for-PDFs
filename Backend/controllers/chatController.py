@@ -1,7 +1,5 @@
-import os
 from typing import Dict, AsyncGenerator
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv
 from langchain_core.messages import trim_messages
 from langchain_core.prompts import MessagesPlaceholder
@@ -10,15 +8,12 @@ from langchain_classic.chains.retrieval import create_retrieval_chain
 from langchain_classic.chains.combine_documents import create_stuff_documents_chain
 from langchain_community.chat_message_histories import ChatMessageHistory
 from services.vectorStore import get_vector_store
+from langchain_groq import ChatGroq
 
 load_dotenv()
 
 # Initialize LLM
-llm = ChatGoogleGenerativeAI(
-    model="gemini-2.5-flash",
-    google_api_key=os.getenv("GOOGLE_API_KEY"),
-    temperature=0.3
-)
+llm = ChatGroq(model="openai/gpt-oss-120b")
 
 # Single global chat history for current session
 _chat_history = ChatMessageHistory()
@@ -135,7 +130,7 @@ async def generate_answer_stream(question: str) -> AsyncGenerator[str, None]:
         print(f"Error generating answer: {str(e)}")
         raise
 
-# Keep the original non-streaming function for backwards compatibility
+# non-streaming function for backwards compatibility
 async def generate_answer(question: str) -> Dict[str, any]:
     """
     Generate answer using RAG (non-streaming version)

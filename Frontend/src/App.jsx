@@ -10,17 +10,15 @@ function App() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(null);
 
+  // Upload and process PDF
   const handleFileUpload = async (file) => {
-    console.log('File uploaded:', file);
     setUploadedFile(file);
     setIsProcessing(true);
     setError(null);
-    
+
     try {
-      // Call backend API
       const summaryData = await uploadPDF(file);
-      
-      // Map backend response to frontend format
+
       setSummary({
         title: summaryData.title_and_authors || 'No title available',
         abstract: summaryData.abstract || 'No abstract available',
@@ -29,9 +27,8 @@ function App() {
         results: summaryData.key_results || 'No results available',
         conclusion: summaryData.conclusion || 'No conclusion available'
       });
-      
+
     } catch (err) {
-      console.error('Error uploading file:', err);
       setError(err.response?.data?.detail || 'Failed to process PDF. Please try again.');
       setUploadedFile(null);
     } finally {
@@ -39,12 +36,14 @@ function App() {
     }
   };
 
+  // Reset app state for a new PDF
   const handleNewPaper = () => {
     setUploadedFile(null);
     setSummary(null);
     setError(null);
   };
 
+  // Upload view
   if (!uploadedFile) {
     return (
       <div className="h-screen flex flex-col">
@@ -54,6 +53,7 @@ function App() {
     );
   }
 
+  // Main UI after upload
   return (
     <div className="h-screen flex flex-col bg-gray-50 dark:bg-gray-950">
       <Header fileName={uploadedFile?.name} onNewPaper={handleNewPaper} />
