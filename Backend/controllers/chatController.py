@@ -44,7 +44,7 @@ async def generate_answer_stream(question: str) -> AsyncGenerator[str, None]:
         vector_store = get_vector_store()
         retriever = vector_store.as_retriever(
             search_type="mmr",
-            search_kwargs={"k": 4, "fetch_k": 10}
+            search_kwargs={"k": 3, "fetch_k": 10}
         )
         
         # Contextualize question prompt
@@ -97,7 +97,7 @@ async def generate_answer_stream(question: str) -> AsyncGenerator[str, None]:
         # Trim messages to prevent context overflow
         trimmed_history = trim_messages(
             chat_history.messages,
-            max_tokens=2000,
+            max_tokens=1000,
             strategy="last",
             token_counter=llm,
             include_system=False,

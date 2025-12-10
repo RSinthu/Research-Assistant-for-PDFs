@@ -3,30 +3,44 @@ fastapi==0.124.0
 uvicorn==0.38.0
 pydantic==2.12.5
 pydantic-settings==2.12.0
+python-multipart==0.0.20
 
 # LangChain & AI
 langchain==1.1.2
 langchain-community==0.4.1
 langchain-core==1.1.1
 langchain-text-splitters==1.0.0
+langchain-groq==1.1.0
+langchain-huggingface==1.1.0
 langgraph==1.0.4
 langgraph-checkpoint==3.0.1
 langsmith==0.4.56
-
-# Google AI
-google-generativeai==0.8.5
-google-api-python-client==2.187.0
 
 # Transformers & ML
 transformers==4.57.3
 tokenizers==0.22.1
 huggingface-hub==0.36.0
 safetensors==0.7.0
+sentence-transformers==5.1.2
+torch==2.9.1
+
+# Vector Database
+faiss-cpu==1.13.1
+
+# Audio/Video Processing
+faster-whisper==1.2.1
+pydub==0.25.1
+
+# Document Processing
+PyMuPDF==1.26.6
+pypdf==6.4.1
+python-docx
 
 # HTTP & Async
 httpx==0.28.1
 aiohttp==3.13.2
 requests==2.32.5
+aiofiles==25.1.0
 
 # Database
 SQLAlchemy==2.0.44
@@ -35,4 +49,10 @@ SQLAlchemy==2.0.44
 python-dotenv==1.2.1
 pyyaml==6.0.3
 numpy==2.3.5
+pandas==2.3.3
 tqdm==4.67.1
+pillow==12.0.0
+
+# Scientific Computing (if needed)
+scikit-learn==1.7.2
+scipy==1.16.3
