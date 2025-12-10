@@ -87,8 +87,8 @@ const PDFViewer = ({ file }) => {
       </div>
 
       {/* PDF Display Area */}
-      <div className="flex-1 overflow-auto bg-gray-50 dark:bg-gray-900 flex justify-center p-4">
-        <div className="flex flex-col items-center">
+      <div className="flex-1 overflow-auto bg-gray-50 dark:bg-gray-900 p-4">
+        <div className="min-w-fit mx-auto">
           {file ? (
             <Document
               file={file}
